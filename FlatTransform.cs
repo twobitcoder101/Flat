@@ -81,5 +81,31 @@ namespace Flat
 
             return result;
         }
+
+        public bool Equals(FlatTransform other)
+        {
+            return this.PositionX == other.PositionX && 
+                this.PositionY == other.PositionY &&
+                this.CosScaleX == other.CosScaleX &&
+                this.SinScaleX == other.SinScaleX &&
+                this.CosScaleY == other.CosScaleY &&
+                this.SinScaleY == other.SinScaleY;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is FlatTransform other)
+            {
+                return this.Equals(other);
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return new { this.PositionX, this.PositionY, this.CosScaleX, this.SinScaleX, this.CosScaleY, this.SinScaleY }.GetHashCode();
+        }
+
     }
 }

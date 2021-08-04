@@ -22,13 +22,12 @@ namespace Flat
 
         public override bool Equals(object obj)
         {
-            if(!(obj is FlatSize))
+            if(obj is FlatSize other)
             {
-                return false;
+                return this.Equals(other);
             }
 
-            bool result = this.Equals((FlatSize)obj);
-            return result;
+            return false;
         }
 
         public override int GetHashCode()

@@ -31,7 +31,7 @@ namespace Flat
                 return false;
             }
 
-            // "a", "b", and "c" and 3 sides of a triangle.
+            // "a", "b", and "c" are 3 sides of a triangle.
             //  "c": is the hypotonus and extends from the ray.position to the circle.center.
             //  "b": is the projection of the hypotonus on the ray direction.
             //  "a": is the opposite side of the angle formed by "c" and "b".

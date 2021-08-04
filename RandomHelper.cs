@@ -44,6 +44,20 @@ namespace Flat
             return result;
         }
 
+        public static bool RandomBooleon()
+        {
+            int value = RandomHelper.RandomInteger(0, 2);
+
+            if(value == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public static float RandomSingle()
         {
             return (float)Rand.NextDouble();

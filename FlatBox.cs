@@ -40,13 +40,12 @@ namespace Flat
 
         public override bool Equals(object obj)
         {
-            if(!(obj is FlatBox))
+            if(obj is FlatBox other)
             {
-                return false;
+                return this.Equals(other);
             }
 
-            bool result = this.Equals((FlatBox)obj);
-            return result;
+            return false;
         }
 
         public override int GetHashCode()

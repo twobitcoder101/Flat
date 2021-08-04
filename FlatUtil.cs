@@ -19,6 +19,31 @@ namespace Flat
         /// </summary>
         public static readonly float VerySmallAmount = 0.0001f;
 
+        public static float Clamp(float value, float min, float max)
+        {
+            if(min == max)
+            {
+                return min;
+            }
+
+            if(min > max)
+            {
+                FlatUtil.Swap(ref min, ref max);
+            }
+
+            if(value < min)
+            {
+                return min;
+            }
+
+            if(value > max)
+            {
+                return max;
+            }
+
+            return value;
+        }
+
         public static void Swap<T>(ref T a, ref T b) where T : struct
         {
             T t = a;
@@ -46,6 +71,36 @@ namespace Flat
             graphics.PreferredBackBufferWidth = (int)MathF.Round((float)dm.Width * ratio);
             graphics.PreferredBackBufferHeight = (int)MathF.Round((float)dm.Height * ratio);
             graphics.ApplyChanges();
+        }
+
+        public static string GetGraphicsDeviceName(GraphicsDeviceManager graphics)
+        {
+            return graphics.GraphicsDevice.Adapter.Description;
+        }
+
+        public static void GetCurrentDisplaySize(GraphicsDeviceManager graphics, out int width, out int height)
+        {
+            DisplayMode dm = graphics.GraphicsDevice.Adapter.CurrentDisplayMode;
+            width = dm.Width;
+            height = dm.Height;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float GetElapsedTimeInSeconds(GameTime gameTime)
+        {
+            return (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
+        public static float GetElapsedTimeInSeconds(GameTime gameTime, int interval)
+        {
+            return (float)gameTime.ElapsedGameTime.TotalSeconds / (float)interval;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float ConvertMilerPerHourToMetersPerSecond(float mph)
+        { 
+            return mph * 0.44704f;
         }
 
         //public static Vector2 Transform(Vector2 value, in Transform transform)
@@ -107,24 +162,6 @@ namespace Flat
             }
 
             return true;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float GetElapsedTimeInSeconds(GameTime gameTime)
-        {
-            return (float)gameTime.ElapsedGameTime.TotalSeconds;
-        }
-
-        public static float GetElapsedTimeInSeconds(GameTime gameTime, int interval)
-        {
-            return (float)gameTime.ElapsedGameTime.TotalSeconds / (float)interval;
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float ConvertMilerPerHourToMetersPerSecond(float mph)
-        { 
-            return mph * 0.44704f;
         }
 
         public static bool IntersectCircles(in FlatCircle a, in FlatCircle b)

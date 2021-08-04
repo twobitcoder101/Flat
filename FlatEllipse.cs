@@ -47,13 +47,12 @@ namespace Flat
 
         public override bool Equals(object obj)
         {
-            if(!(obj is FlatEllipse))
+            if(obj is FlatEllipse other)
             {
-                return false;
+                return this.Equals(other);
             }
 
-            bool result = this.Equals((FlatEllipse)obj);
-            return result;
+            return false;
         }
 
         public override int GetHashCode()

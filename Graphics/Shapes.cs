@@ -130,8 +130,10 @@ namespace Flat.Graphics
             GraphicsDevice device = this.game.GraphicsDevice;
             int primitiveCount = this.indexCount / 3;
 
-            foreach (EffectPass pass in this.effect.CurrentTechnique.Passes)
+            EffectPassCollection passes = this.effect.CurrentTechnique.Passes;
+            for(int i = 0; i < passes.Count; i++)
             {
+                EffectPass pass = passes[i];
                 pass.Apply();
 
                 device.DrawUserIndexedPrimitives<VertexPositionColor>(
@@ -410,8 +412,8 @@ namespace Flat.Graphics
         {
             this.EnsureStarted();
 
-            int shapeVertexCount = 4;
-            int shapeIndexCount = 6;
+            const int shapeVertexCount = 4;
+            const int shapeIndexCount = 6;
 
             this.EnsureSpace(shapeVertexCount, shapeIndexCount);
 
@@ -570,6 +572,45 @@ namespace Flat.Graphics
 
             this.shapeCount++;
         }
+
+        public void DrawPolygonFill(Vector2[] vertices, int[] triangles, Color color)
+        {
+            this.EnsureStarted();
+            this.EnsureSpace(vertices.Length, indices.Length);
+
+            for (int i = 0; i < triangles.Length; i++)
+            {
+                this.indices[this.indexCount++] = this.vertexCount + triangles[i];
+            }
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 v = vertices[i];
+                this.vertices[this.vertexCount++] = new VertexPositionColor(new Vector3(v.X, v.Y, 0f), color);
+            }
+
+            this.shapeCount++;
+        }
+
+        public void DrawPolygonFill(ReadOnlySpan<Vector2> vertices, int[] triangles, Color color)
+        {
+            this.EnsureStarted();
+            this.EnsureSpace(vertices.Length, indices.Length);
+
+            for (int i = 0; i < triangles.Length; i++)
+            {
+                this.indices[this.indexCount++] = this.vertexCount + triangles[i];
+            }
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 v = vertices[i];
+                this.vertices[this.vertexCount++] = new VertexPositionColor(new Vector3(v.X, v.Y, 0f), color);
+            }
+
+            this.shapeCount++;
+        }
+
 
         public void DrawPolygonFill(Span<Vector2> vertices, int[] triangles, FlatTransform transform, Color color)
         {
@@ -1076,9 +1117,9 @@ namespace Flat.Graphics
             }
         }
 
-        public void DrawPolygon(Span<Vector2> vertices, FlatTransform transform, Color color)
+        public void DrawPolygon(Vector2[] vertices, Color color)
         {
-            if (vertices.Length < 3)
+            if (vertices is null || vertices.Length < 3)
             {
                 return;
             }
@@ -1090,12 +1131,62 @@ namespace Flat.Graphics
                 Vector2 a = vertices[i];
                 Vector2 b = vertices[(i + 1) % vertices.Length];
 
+                this.DrawLine(a, b, color);
+            }
+        }
+
+
+        public void DrawPolygon(ReadOnlySpan<Vector2> vertices, FlatTransform transform, Color color)
+        {
+            if (vertices.Length < 3)
+            {
+                return;
+            }
+
+            int prev = vertices.Length - 1;
+            int next = 0;
+
+            // Now perform the rest of the vertex transforms and draw a line between each, 
+            //  except for the final line segment that connects back to the first.
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 a = vertices[prev];
+                Vector2 b = vertices[next];
+
+                prev = next;
+                next++;
+
                 a = FlatUtil.Transform(a, transform);
                 b = FlatUtil.Transform(b, transform);
 
                 this.DrawLine(a, b, color);
             }
         }
+
+        public void DrawPolygon(ReadOnlySpan<Vector2> vertices, Color color)
+        {
+            if (vertices.Length < 3)
+            {
+                return;
+            }
+
+            int prev = vertices.Length - 1;
+            int next = 0;
+
+            // Now perform the rest of the vertex transforms and draw a line between each, 
+            //  except for the final line segment that connects back to the first.
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 a = vertices[prev];
+                Vector2 b = vertices[next];
+
+                prev = next;
+                next++;
+
+                this.DrawLine(a, b, color);
+            }
+        }
+
 
         public void DrawPolygonTriangles(Vector2[] vertices, int[] triangles, FlatTransform transform, Color color)
         {

@@ -535,12 +535,14 @@ namespace Flat.Graphics
                 this.indices[this.indexCount++] = 0 + this.vertexCount;
                 this.indices[this.indexCount++] = index + this.vertexCount;
                 this.indices[this.indexCount++] = index + 1 + this.vertexCount;
+                
+                index++;
             }
 
             // Vertices;
 
             // Save all remaining vertices.
-            for (int i = 1; i < shapeVertexCount; i++)
+            for (int i = 0; i < shapeVertexCount; i++)
             {
                 float x = MathF.Cos(angle) * radius.X + center.X;
                 float y = MathF.Sin(angle) * radius.Y + center.Y;

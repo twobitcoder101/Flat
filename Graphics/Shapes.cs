@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Flat.Physics.Shapes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -1032,10 +1031,10 @@ namespace Flat.Graphics
             }
         }
 
-        public void DrawPolygon(PolygonShape polygon, Vector2 position, float rotation, Vector2 scale, Color color)
-        {
-            this.DrawPolygon(polygon.Vertices, position, rotation, scale, color);
-        }
+        //public void DrawPolygon(PolygonShape polygon, Vector2 position, float rotation, Vector2 scale, Color color)
+        //{
+        //    this.DrawPolygon(polygon.Vertices, position, rotation, scale, color);
+        //}
 
         public void DrawPolygon(Vector2[] vertices, Vector2 position, float rotation, Vector2 scale, Color color)
         {

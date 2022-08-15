@@ -9,6 +9,11 @@ namespace Flat.Input
         Up, Down, Left, Right
     }
 
+    public enum GamePadButtons
+    {
+        A, B, X, Y, Start, Back, LeftShoulder, LeftStick, RightShoulder, RightStick
+    }
+
     public sealed class FlatGamePad
     {
         public static int MaxGamePadCount = 4;
@@ -128,26 +133,14 @@ namespace Flat.Input
                 return false;
             }
 
-            bool result = false;
-
-            if (button == DPadButtons.Up)
+            switch(button)
             {
-                result = this.currGamePadStates[index].DPad.Up == ButtonState.Pressed;
+                case DPadButtons.Up: return this.currGamePadStates[index].DPad.Up == ButtonState.Pressed;
+                case DPadButtons.Down: return this.currGamePadStates[index].DPad.Down == ButtonState.Pressed;
+                case DPadButtons.Left: return this.currGamePadStates[index].DPad.Left == ButtonState.Pressed;
+                case DPadButtons.Right: return this.currGamePadStates[index].DPad.Right == ButtonState.Pressed;
+                default: return false;
             }
-            else if (button == DPadButtons.Down)
-            {
-                result = this.currGamePadStates[index].DPad.Down == ButtonState.Pressed;
-            }
-            else if (button == DPadButtons.Left)
-            {
-                result = this.currGamePadStates[index].DPad.Left == ButtonState.Pressed;
-            }
-            else if (button == DPadButtons.Right)
-            {
-                result = this.currGamePadStates[index].DPad.Right == ButtonState.Pressed;
-            }
-
-            return result;
         }
 
         public Vector2 LeftThumbStick(int index)
@@ -169,5 +162,49 @@ namespace Flat.Input
 
             return this.currGamePadStates[index].ThumbSticks.Right;
         }
+
+        public float RightTrigger(int index)
+        {
+            if (!this.IsValidGamePadIndex(index))
+            {
+                return 0f;
+            }
+
+            return this.currGamePadStates[index].Triggers.Right;
+        }
+
+        public float LefetTrigger(int index)
+        {
+            if (!this.IsValidGamePadIndex(index))
+            {
+                return 0f;
+            }
+
+            return this.currGamePadStates[index].Triggers.Left;
+        }
+
+        public bool IsButtonDown(int index, GamePadButtons button)
+        {
+            if (!this.IsValidGamePadIndex(index))
+            {
+                return false;
+            }
+
+            switch(button)
+            {
+                case GamePadButtons.A: return this.currGamePadStates[index].Buttons.A == ButtonState.Pressed;
+                case GamePadButtons.B: return this.currGamePadStates[index].Buttons.B == ButtonState.Pressed;
+                case GamePadButtons.X: return this.currGamePadStates[index].Buttons.X == ButtonState.Pressed;
+                case GamePadButtons.Y: return this.currGamePadStates[index].Buttons.Y == ButtonState.Pressed;
+                case GamePadButtons.Start: return this.currGamePadStates[index].Buttons.Start == ButtonState.Pressed;
+                case GamePadButtons.Back: return this.currGamePadStates[index].Buttons.Back == ButtonState.Pressed;
+                case GamePadButtons.LeftShoulder: return this.currGamePadStates[index].Buttons.LeftShoulder == ButtonState.Pressed;
+                case GamePadButtons.LeftStick: return this.currGamePadStates[index].Buttons.LeftStick == ButtonState.Pressed;
+                case GamePadButtons.RightShoulder: return this.currGamePadStates[index].Buttons.RightShoulder == ButtonState.Pressed;
+                case GamePadButtons.RightStick: return this.currGamePadStates[index].Buttons.RightStick == ButtonState.Pressed;
+                default: return false;
+            }
+        }
+
     }
 }

@@ -56,19 +56,34 @@ namespace Flat.Input
             return this.currMouseState.MiddleButton == ButtonState.Pressed;
         }
 
-        public bool IsLeftMouseButtonClicked()
+        public bool IsLeftMouseButtonPressed()
         {
             return this.currMouseState.LeftButton == ButtonState.Pressed && this.prevMouseState.LeftButton == ButtonState.Released;
         }
 
-        public bool IsRightMouseButtonClicked()
+        public bool IsRightMouseButtonPressed()
         {
             return this.currMouseState.RightButton == ButtonState.Pressed && this.prevMouseState.RightButton == ButtonState.Released;
         }
 
-        public bool IsMiddleMouseButtonClicked()
+        public bool IsMiddleMouseButtonPressed()
         {
             return this.currMouseState.MiddleButton == ButtonState.Pressed && this.prevMouseState.MiddleButton == ButtonState.Released;
+        }
+
+        public bool IsLeftMouseButtonReleased()
+        {
+            return this.currMouseState.LeftButton == ButtonState.Released && this.prevMouseState.LeftButton == ButtonState.Pressed;
+        }
+
+        public bool IsRightMouseButtonReleased()
+        {
+            return this.currMouseState.RightButton == ButtonState.Released && this.prevMouseState.RightButton == ButtonState.Pressed;
+        }
+
+        public bool IsMiddleMouseButtonReleased()
+        {
+            return this.currMouseState.MiddleButton == ButtonState.Released && this.prevMouseState.MiddleButton == ButtonState.Pressed;
         }
 
         public Vector2 GetMouseScreenPosition(Game game, Screen screen)

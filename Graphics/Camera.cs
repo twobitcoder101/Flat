@@ -20,6 +20,9 @@ namespace Flat.Graphics
         private int zoom;
         private bool updateRequired;
 
+        private float angle;
+        private Vector2 up;
+
         private const float MinZ = 1f;
         private const float MaxZ = 2000f;
 
@@ -77,6 +80,16 @@ namespace Flat.Graphics
             }
         }
 
+        public Vector2 Up
+        {
+            get { return this.up; }
+        }
+
+        public float Angle
+        {
+            get { return this.angle; }
+        }
+
         #endregion
 
         public Camera(Screen screen)
@@ -90,6 +103,9 @@ namespace Flat.Graphics
             this.fieldOfView = MathHelper.PiOver2;
             this.baseZ = this.GetZFromHeight(screen.Height);
             this.z = baseZ;
+
+            this.angle = 0f;
+            this.up = new Vector2(MathF.Sin(angle), MathF.Cos(angle));
 
             this.zoom = 1;
             this.updateRequired = true;
@@ -124,7 +140,7 @@ namespace Flat.Graphics
                 return;
             }
 
-            this.view = Matrix.CreateLookAt(new Vector3(0, 0, (float)this.z), Vector3.Zero, Vector3.Up);
+            this.view = Matrix.CreateLookAt(new Vector3(0, 0, (float)this.z), Vector3.Zero, new Vector3(this.up, 0f));
             this.proj = Matrix.CreatePerspectiveFieldOfView(this.fieldOfView, this.aspectRatio, Camera.MinZ, Camera.MaxZ);
 
             this.updateRequired = false;
@@ -187,6 +203,13 @@ namespace Flat.Graphics
             this.zoom = new_zoom;
             this.z = this.baseZ * (1d / (double)this.zoom);
 
+            this.updateRequired = true;
+        }
+
+        public void Rotate(float amount)
+        {
+            this.angle += amount;
+            this.up = new Vector2(MathF.Sin(angle), MathF.Cos(angle));
             this.updateRequired = true;
         }
 

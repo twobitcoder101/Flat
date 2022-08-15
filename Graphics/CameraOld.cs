@@ -3,9 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 ////////////////////////////////////////////////////////////////////////
-///     This camera code is kept here for reference
-///     This uses a Single Vector2 for position information.
-///     The new camera class uses a Location.
+///     This camera code is kept here for reference only.
 ////////////////////////////////////////////////////////////////////////
 
 /*

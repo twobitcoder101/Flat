@@ -5,8 +5,6 @@ using System.Numerics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Flat.Graphics;
-//using Flat.Map;
-using Flat.Physics.Shapes;
 
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -421,10 +419,10 @@ namespace Flat
             return true;
         }
 
-        public static bool IntersectPolygonCircle(PolygonShape polygon, FlatCircle circle, out float depth, out Vector2 normal)
-        {
-            throw new NotImplementedException();
-        }
+        //public static bool IntersectPolygonCircle(PolygonShape polygon, FlatCircle circle, out float depth, out Vector2 normal)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public static bool IntersectPointCircle(Vector2 p, Vector2 circleCenter, float circleRadius)
         {
@@ -480,52 +478,52 @@ namespace Flat
             }
         }
 
-        public static void CreateBoundingBox(PolygonShape polygon, out FlatBox box)
-        {
-            Vector2[] vertices = polygon.Vertices;
-            int[] hull = polygon.ConvexHull;
+        //public static void CreateBoundingBox(PolygonShape polygon, out FlatBox box)
+        //{
+        //    Vector2[] vertices = polygon.Vertices;
+        //    int[] hull = polygon.ConvexHull;
 
-            float xmin = float.MaxValue;
-            float xmax = float.MinValue;
-            float ymin = float.MaxValue;
-            float ymax = float.MinValue;
+        //    float xmin = float.MaxValue;
+        //    float xmax = float.MinValue;
+        //    float ymin = float.MaxValue;
+        //    float ymax = float.MinValue;
 
-            for (int i = 0; i < hull.Length; i++)
-            {
-                Vector2 v = vertices[hull[i]];
+        //    for (int i = 0; i < hull.Length; i++)
+        //    {
+        //        Vector2 v = vertices[hull[i]];
 
-                if (v.X < xmin) { xmin = v.X; }
-                if (v.X > xmax) { xmax = v.X; }
-                if (v.Y < ymin) { ymin = v.Y; }
-                if (v.Y > ymax) { ymax = v.Y; }
-            }
+        //        if (v.X < xmin) { xmin = v.X; }
+        //        if (v.X > xmax) { xmax = v.X; }
+        //        if (v.Y < ymin) { ymin = v.Y; }
+        //        if (v.Y > ymax) { ymax = v.Y; }
+        //    }
 
-            box = new FlatBox(new Vector2(xmin, ymin), new Vector2(xmax, ymax));
-        }
+        //    box = new FlatBox(new Vector2(xmin, ymin), new Vector2(xmax, ymax));
+        //}
 
-        public static void CreateBoundingBox(PolygonShape polygon, FlatTransform transform, out FlatBox box)
-        {
-            Vector2[] vertices = polygon.Vertices;
-            int[] hull = polygon.ConvexHull;
+        //public static void CreateBoundingBox(PolygonShape polygon, FlatTransform transform, out FlatBox box)
+        //{
+        //    Vector2[] vertices = polygon.Vertices;
+        //    int[] hull = polygon.ConvexHull;
 
-            float xmin = float.MaxValue;
-            float xmax = float.MinValue;
-            float ymin = float.MaxValue;
-            float ymax = float.MinValue;
+        //    float xmin = float.MaxValue;
+        //    float xmax = float.MinValue;
+        //    float ymin = float.MaxValue;
+        //    float ymax = float.MinValue;
 
-            for (int i = 0; i < hull.Length; i++)
-            {
-                Vector2 v = vertices[hull[i]];
-                v = FlatUtil.Transform(v, transform);
+        //    for (int i = 0; i < hull.Length; i++)
+        //    {
+        //        Vector2 v = vertices[hull[i]];
+        //        v = FlatUtil.Transform(v, transform);
 
-                if (v.X < xmin) { xmin = v.X; }
-                if (v.X > xmax) { xmax = v.X; }
-                if (v.Y < ymin) { ymin = v.Y; }
-                if (v.Y > ymax) { ymax = v.Y; }
-            }
+        //        if (v.X < xmin) { xmin = v.X; }
+        //        if (v.X > xmax) { xmax = v.X; }
+        //        if (v.Y < ymin) { ymin = v.Y; }
+        //        if (v.Y > ymax) { ymax = v.Y; }
+        //    }
 
-            box = new FlatBox(xmin, xmax, ymin, ymax);
-        }
+        //    box = new FlatBox(xmin, xmax, ymin, ymax);
+        //}
 
         public static void CreateBoundingBox(Vector2[] vertices, int[] hull, out FlatBox box)
         {
@@ -547,10 +545,24 @@ namespace Flat
             box = new FlatBox(xmin, xmax, ymin, ymax);
         }
 
-        public static void CreateBoundingBox(CircleShape circle, Vector2 position, out FlatBox box)
+        public static void CreateBoundingBox(Vector2[] vertices, out FlatBox box)
         {
-            float radius = circle.Radius;
-            box = new FlatBox(position.X - radius, position.X + radius, position.Y - radius, position.Y + radius);
+            float xmin = float.MaxValue;
+            float xmax = float.MinValue;
+            float ymin = float.MaxValue;
+            float ymax = float.MinValue;
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 v = vertices[i];
+
+                if (v.X < xmin) { xmin = v.X; }
+                if (v.X > xmax) { xmax = v.X; }
+                if (v.Y < ymin) { ymin = v.Y; }
+                if (v.Y > ymax) { ymax = v.Y; }
+            }
+
+            box = new FlatBox(xmin, xmax, ymin, ymax);
         }
 
         public static bool IsPointInTriangle(Vector2 p, Vector2 a, Vector2 b, Vector2 c)

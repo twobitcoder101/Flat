@@ -884,6 +884,56 @@ namespace Flat.Graphics
             this.DrawBox(min, max, color);
         }
 
+        public void DrawBox(Vector2 center, float width, float height, float angle, Color color)
+        {
+            float left = -width * 0.5f;
+            float right = left + width;
+            float bottom = -height * 0.5f;
+            float top = bottom + height;
+
+            // Precompute the trig. functions.
+            float sin = MathF.Sin(angle);
+            float cos = MathF.Cos(angle);
+
+            // Vector components:
+
+            float ax = left;
+            float ay = top;
+            float bx = right;
+            float by = top;
+            float cx = right;
+            float cy = bottom;
+            float dx = left;
+            float dy = bottom;
+
+            // Rotation transform:
+
+            float rx1 = ax * cos - ay * sin;
+            float ry1 = ax * sin + ay * cos;
+            float rx2 = bx * cos - by * sin;
+            float ry2 = bx * sin + by * cos;
+            float rx3 = cx * cos - cy * sin;
+            float ry3 = cx * sin + cy * cos;
+            float rx4 = dx * cos - dy * sin;
+            float ry4 = dx * sin + dy * cos;
+
+            // Translation transform:
+
+            ax = rx1 + center.X;
+            ay = ry1 + center.Y;
+            bx = rx2 + center.X;
+            by = ry2 + center.Y;
+            cx = rx3 + center.X;
+            cy = ry3 + center.Y;
+            dx = rx4 + center.X;
+            dy = ry4 + center.Y;
+
+            this.DrawLine(ax, ay, bx, by, color);
+            this.DrawLine(bx, by, cx, cy, color);
+            this.DrawLine(cx, cy, dx, dy, color);
+            this.DrawLine(dx, dy, ax, ay, color);
+        }
+
         public void DrawCircle(in FlatCircle circle, int points, Color color)
         {
             this.DrawCircle(circle.Center, circle.Radius, points, color);
